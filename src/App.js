@@ -1,20 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import '@babel/polyfill';
 import SimpleGame from './pages/SimpleGame';
-import 'regenerator-runtime/runtime';
 
-const App = ({ title }) => (
+const App = () => (
   <>
-    <div>
-      <h1>{title}</h1>
-    </div>
-    ;
     <SimpleGame />
   </>
 );
-
-App.propTypes = {
-  title: PropTypes.string.isRequired,
-};
 
 export default App;
