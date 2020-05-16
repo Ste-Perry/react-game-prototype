@@ -1,5 +1,5 @@
 import React from 'react';
-import Box from '../components/Box';
+import Square from '../components/Box';
 
 const MoveBox = (entities, { input }) => {
   const offset = 8;
@@ -24,7 +24,7 @@ const MoveBox = (entities, { input }) => {
       box1: {
         x: newX,
         y: newY,
-        renderer: <Box />,
+        renderer: <Square />,
       },
     };
   }
