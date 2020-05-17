@@ -20,6 +20,11 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'eslint-loader',
       },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg)$/i,
+        exclude: /node_modules/,
+        loader: 'file-loader',
+      }
     ],
   },
   resolve: {

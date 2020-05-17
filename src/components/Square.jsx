@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import pieceTypes from '../constants/pieceTypes';
+import images from '../img/images';
 
 // box coordinates are absolute, not relative to gameboard
 const Square = ({ square }) => {
@@ -7,6 +9,10 @@ const Square = ({ square }) => {
   const { row, col } = square;
   const left = col * size;
   const top = row * size;
+
+  const getSquareImage = () => {
+    return images[square.piece.type];
+  };
 
   const getSquareColor = () => {
     const evenRow = row % 2 === 0;
@@ -23,20 +29,47 @@ const Square = ({ square }) => {
     return 'white';
   };
 
+  const getPieceSize = () => {
+    if (
+      square.piece.type === pieceTypes.BP ||
+      square.piece.type === pieceTypes.WP
+    ) {
+      return size - 40;
+    }
+    return size - 20;
+  };
+
   return (
     <div
       style={{
+        display: 'table',
         position: 'absolute',
         border: 'solid 1px black',
         width: size,
         height: size,
         color: 'red',
+        margin: 'auto',
         backgroundColor: getSquareColor(),
         left,
         top,
       }}
     >
-      {square.piece.type}
+      {square.piece.type !== pieceTypes.ES && (
+        <div
+          style={{
+            display: 'table-cell',
+            verticalAlign: 'middle',
+            textAlign: 'center',
+          }}
+        >
+          <img
+            width={getPieceSize()}
+            height={getPieceSize()}
+            src={getSquareImage()}
+            alt={square.piece.type}
+          />
+        </div>
+      )}
     </div>
   );
 };

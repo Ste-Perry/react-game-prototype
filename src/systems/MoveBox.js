@@ -1,10 +1,9 @@
-import React from 'react';
-import Square from '../components/Box';
+import getSquareNameFromRowCol from '../utillities/squareUtils';
 
 const MoveBox = (entities, { input }) => {
-  const offset = 8;
-  const xMax = entities.board.width + offset;
-  const yMax = entities.board.height + offset;
+  const offset = 0;
+  const xMax = 800;
+  const yMax = 800;
   const { payload } = input.find(x => x.name === 'onMouseDown') || {};
   if (
     payload &&
@@ -14,19 +13,13 @@ const MoveBox = (entities, { input }) => {
     payload.pageY <= yMax
   ) {
     const zoneSize = 100;
-    const xZone = Math.floor(payload.pageX / zoneSize);
-    const yZone = Math.floor(payload.pageY / zoneSize);
-    const newX = xZone * zoneSize + zoneSize / 2 + offset;
-    const newY = yZone * zoneSize + zoneSize / 2 + offset;
+    const col = Math.floor(payload.pageX / zoneSize);
+    const row = Math.floor(payload.pageY / zoneSize);
+    console.log(
+      `clicked on square ${getSquareNameFromRowCol(row, col)}`
+    );
 
-    return {
-      board: entities.board,
-      box1: {
-        x: newX,
-        y: newY,
-        renderer: <Square />,
-      },
-    };
+    return entities;
   }
   return entities;
 };
