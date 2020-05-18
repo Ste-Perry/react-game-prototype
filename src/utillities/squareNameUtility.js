@@ -20,7 +20,6 @@ const rowMap = {
   7: '1',
 };
 
-const getSquareNameFromRowCol = (row, col) =>
-  `${colMap[col]}${rowMap[row]}`;
+const getSquareNameFromRowCol = (row, col) => `${colMap[col]}${rowMap[row]}`;
 
 export default getSquareNameFromRowCol;

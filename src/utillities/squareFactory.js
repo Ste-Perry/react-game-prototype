@@ -1,5 +1,6 @@
 import pt from '../constants/pieceTypes';
 import square from '../models/square';
+import getIdx from './rowColToIndexUtility';
 
 const defaultBoardSetup = [
   pt.BR,
@@ -103,9 +104,7 @@ const validateBoardSetup = setup => {
     const expectedCount = expectedPieceCounts[type];
     const actualCount = counts[type];
     if (expectedCount !== actualCount) {
-      throw Error(
-        `incorrect number of ${type} - expected: ${expectedCount} actual: ${actualCount}`
-      );
+      throw Error(`incorrect number of ${type} - expected: ${expectedCount} actual: ${actualCount}`);
     }
   });
 };
@@ -115,8 +114,7 @@ const squareFactory = (initialSetup = defaultBoardSetup) => {
   const squares = [];
   for (let row = 0; row < 8; row += 1) {
     for (let col = 0; col < 8; col += 1) {
-      const index = col + row * 8;
-      squares.push(square(row, col, initialSetup[index]));
+      squares.push(square(row, col, initialSetup[getIdx(row, col)]));
     }
   }
   return squares;

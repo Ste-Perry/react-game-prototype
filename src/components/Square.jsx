@@ -30,10 +30,7 @@ const Square = ({ square }) => {
   };
 
   const getPieceSize = () => {
-    if (
-      square.piece.type === pieceTypes.BP ||
-      square.piece.type === pieceTypes.WP
-    ) {
+    if (square.piece.type === pieceTypes.BP || square.piece.type === pieceTypes.WP) {
       return size - 40;
     }
     return size - 20;
@@ -49,7 +46,7 @@ const Square = ({ square }) => {
         height: size,
         color: 'red',
         margin: 'auto',
-        backgroundColor: getSquareColor(),
+        backgroundColor: square.highlighted ? 'seagreen' : getSquareColor(),
         left,
         top,
       }}
@@ -62,12 +59,7 @@ const Square = ({ square }) => {
             textAlign: 'center',
           }}
         >
-          <img
-            width={getPieceSize()}
-            height={getPieceSize()}
-            src={getSquareImage()}
-            alt={square.piece.type}
-          />
+          <img width={getPieceSize()} height={getPieceSize()} src={getSquareImage()} alt={square.piece.type} />
         </div>
       )}
     </div>
