@@ -1,7 +1,6 @@
-import getSquareNameFromRowCol from '../utillities/squareNameUtility';
 import getLegalMoves from '../utillities/legalMoves';
-import getRowColFromSquareName from '../utillities/reverseSquareNameUtility';
-import getIdx from '../utillities/rowColToIndexUtility';
+import { getRowColFromSquareName, getSquareNameFromRowCol } from '../utillities/squareNameUtility';
+import { getIdx } from '../utillities/rowColToIndexUtility';
 
 const MoveBox = (entities, { input }) => {
   const offset = 0;
@@ -22,7 +21,7 @@ const MoveBox = (entities, { input }) => {
     }
     const moves = getLegalMoves(row, col, entities.squares);
     moves.forEach(move => {
-      const [moveRow, moveCol] = getRowColFromSquareName(move);
+      const { row: moveRow, col: moveCol } = getRowColFromSquareName(move);
       result.squares[getIdx(moveRow, moveCol)].highlighted = true;
     });
     return result;

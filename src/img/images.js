@@ -13,18 +13,18 @@ import wp from './wp.png';
 import pt from '../constants/pieceTypes';
 
 const images = {
-  [pt.BR]: br,
-  [pt.BN]: bn,
-  [pt.BB]: bb,
-  [pt.BQ]: bq,
-  [pt.BK]: bk,
-  [pt.BP]: bp,
-  [pt.WR]: wr,
-  [pt.WN]: wn,
-  [pt.WB]: wb,
-  [pt.WQ]: wq,
-  [pt.WK]: wk,
-  [pt.WP]: wp,
+  [pt.BLACK_ROOK]: br,
+  [pt.BLACK_KNIGHT]: bn,
+  [pt.BLACK_BISHOP]: bb,
+  [pt.BLACK_QUEEN]: bq,
+  [pt.BLACK_KING]: bk,
+  [pt.BLACK_PAWN]: bp,
+  [pt.WHITE_ROOK]: wr,
+  [pt.WHITE_KNIGHT]: wn,
+  [pt.WHITE_BISHOP]: wb,
+  [pt.WHITE_QUEEN]: wq,
+  [pt.WHITE_KING]: wk,
+  [pt.WHITE_PAWN]: wp,
 };
 
 export default images;

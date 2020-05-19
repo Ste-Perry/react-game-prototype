@@ -30,7 +30,7 @@ const Square = ({ square }) => {
   };
 
   const getPieceSize = () => {
-    if (square.piece.type === pieceTypes.BP || square.piece.type === pieceTypes.WP) {
+    if (square.piece.type === pieceTypes.BLACK_PAWN || square.piece.type === pieceTypes.WHITE_PAWN) {
       return size - 40;
     }
     return size - 20;
@@ -51,7 +51,7 @@ const Square = ({ square }) => {
         top,
       }}
     >
-      {square.piece.type !== pieceTypes.ES && (
+      {square.piece.type !== pieceTypes.EMPTY_SQUARE && (
         <div
           style={{
             display: 'table-cell',

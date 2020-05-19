@@ -20,6 +20,31 @@ const rowMap = {
   7: '1',
 };
 
-const getSquareNameFromRowCol = (row, col) => `${colMap[col]}${rowMap[row]}`;
+const reverseColMap = {
+  A: 0,
+  B: 1,
+  C: 2,
+  D: 3,
+  E: 4,
+  F: 5,
+  G: 6,
+  H: 7,
+};
 
-export default getSquareNameFromRowCol;
+const reverseRowMap = {
+  '8': 0,
+  '7': 1,
+  '6': 2,
+  '5': 3,
+  '4': 4,
+  '3': 5,
+  '2': 6,
+  '1': 7,
+};
+
+export const getRowColFromSquareName = name => ({
+  row: reverseRowMap[name.substr(1, 1)],
+  col: reverseColMap[name.substr(0, 1)],
+});
+
+export const getSquareNameFromRowCol = (row, col) => `${colMap[col]}${rowMap[row]}`;

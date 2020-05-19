@@ -5,7 +5,7 @@ import getKnightMoves from './knightMoves';
 import getBishopMoves from './bishopMoves';
 import getQueenMoves from './queenMoves';
 import getKingMoves from './kingMoves';
-import getIdx from '../rowColToIndexUtility';
+import { getIdx } from '../rowColToIndexUtility';
 
 const getLegalMoves = (row, col, squares) => {
   const getPieceType = () => {
@@ -15,31 +15,31 @@ const getLegalMoves = (row, col, squares) => {
   const pieceType = getPieceType();
   let moves;
   switch (pieceType) {
-    case pieceTypes.BP:
-    case pieceTypes.WP:
-      moves = getPawnMoves(pieceType === pieceTypes.WP, row, col, squares);
+    case pieceTypes.BLACK_PAWN:
+    case pieceTypes.WHITE_PAWN:
+      moves = getPawnMoves(pieceType === pieceTypes.WHITE_PAWN, row, col, squares);
       break;
-    case pieceTypes.BR:
-    case pieceTypes.WR:
-      moves = getRookMoves(row, col, squares);
+    case pieceTypes.BLACK_ROOK:
+    case pieceTypes.WHITE_ROOK:
+      moves = getRookMoves(pieceType === pieceTypes.WHITE_ROOK, row, col, squares);
       break;
-    case pieceTypes.BN:
-    case pieceTypes.WN:
-      moves = getKnightMoves(row, col, squares);
+    case pieceTypes.BLACK_KNIGHT:
+    case pieceTypes.WHITE_KNIGHT:
+      moves = getKnightMoves(pieceType === pieceTypes.WHITE_KNIGHT, row, col, squares);
       break;
-    case pieceTypes.BB:
-    case pieceTypes.WB:
-      moves = getBishopMoves(row, col, squares);
+    case pieceTypes.BLACK_BISHOP:
+    case pieceTypes.WHITE_BISHOP:
+      moves = getBishopMoves(pieceType === pieceTypes.WHITE_BISHOP, row, col, squares);
       break;
-    case pieceTypes.BQ:
-    case pieceTypes.WQ:
-      moves = getQueenMoves(row, col, squares);
+    case pieceTypes.BLACK_QUEEN:
+    case pieceTypes.WHITE_QUEEN:
+      moves = getQueenMoves(pieceType === pieceTypes.WHITE_QUEEN, row, col, squares);
       break;
-    case pieceTypes.BK:
-    case pieceTypes.WK:
-      moves = getKingMoves(row, col, squares);
+    case pieceTypes.BLACK_KING:
+    case pieceTypes.WHITE_KING:
+      moves = getKingMoves(pieceType === pieceTypes.WHITE_KING, row, col, squares);
       break;
-    case pieceTypes.ES:
+    case pieceTypes.EMPTY_SQUARE:
     default:
       moves = [];
       break;
