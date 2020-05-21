@@ -16,6 +16,10 @@ const SimpleGame = () => {
       renderer: <Square />,
     };
     entities.squares = squares;
+    entities.gameState = {
+      isWhiteMove: true,
+      pieceSelected: null,
+    };
   });
   return (
     <GameEngine

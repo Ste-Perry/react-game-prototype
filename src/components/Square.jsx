@@ -29,6 +29,13 @@ const Square = ({ square }) => {
     return 'white';
   };
 
+  const getHighlightSquareColor = () => {
+    if (square.highlightedSquareToMoveTo) {
+      return 'seagreen';
+    }
+    return 'yellow';
+  };
+
   const getPieceSize = () => {
     if (square.piece.type === pieceTypes.BLACK_PAWN || square.piece.type === pieceTypes.WHITE_PAWN) {
       return size - 40;
@@ -46,7 +53,7 @@ const Square = ({ square }) => {
         height: size,
         color: 'red',
         margin: 'auto',
-        backgroundColor: square.highlighted ? 'seagreen' : getSquareColor(),
+        backgroundColor: square.highlightedPieceToMove || square.highlightedSquareToMoveTo ? getHighlightSquareColor() : getSquareColor(),
         left,
         top,
       }}

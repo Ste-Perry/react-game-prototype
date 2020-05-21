@@ -22,6 +22,10 @@ const getRookMoves = (isWhite, row, col, squares) => {
       if (pieceType === pieceTypes.EMPTY_SQUARE || isEnemyPiece(pieceType, isWhite)) {
         addMove(curLoc);
         curLoc = updateLocation(curLoc);
+        // can't move beyond the enemy piece
+        if (pieceType !== pieceTypes.EMPTY_SQUARE && isEnemyPiece(pieceType, isWhite)) {
+          break;
+        }
       } else {
         break; // must be our piece
       }

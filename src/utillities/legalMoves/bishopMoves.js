@@ -16,6 +16,10 @@ const getBishopMoves = (isWhite, row, col, squares) => {
         moves.push(getSquareNameFromRowCol(curRow, curCol));
         curRow = updateRowLocation(curRow);
         curCol = updateColLocation(curCol);
+        // can't move beyond that enemy piece
+        if (pieceType !== pieceTypes.EMPTY_SQUARE && isEnemyPiece(pieceType, isWhite)) {
+          break;
+        }
       } else {
         break; // must be our piece
       }
