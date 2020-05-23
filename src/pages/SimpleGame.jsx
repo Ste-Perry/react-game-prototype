@@ -2,30 +2,19 @@ import React from 'react';
 import 'regenerator-runtime/runtime';
 import { GameEngine } from 'react-game-engine';
 import MoveBox from '../systems/MoveBox';
-import squareFactory from '../utillities/squareFactory';
-import { getSquareNameFromRowCol } from '../utillities/squareNameUtility';
-import Square from '../components/Square';
+import setupGame from '../utillities/gameUtility';
 
 const SimpleGame = () => {
-  const entities = {};
-  const squares = squareFactory();
-  squares.forEach(square => {
-    const squareName = getSquareNameFromRowCol(square.row, square.col);
-    entities[squareName] = {
-      square,
-      renderer: <Square />,
-    };
-    entities.squares = squares;
-    entities.gameState = {
-      isWhiteMove: true,
-      pieceSelected: null,
-    };
-  });
+  const entities = setupGame();
   return (
     <GameEngine
       style={{
-        width: 800,
-        height: 800,
+        border: 'solid 5px #999',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: 802,
+        height: 1010,
       }}
       systems={[MoveBox]}
       entities={entities}

@@ -17,7 +17,11 @@ const getPawnMoves = (isWhite, row, col, squares) => {
       moves.push(getSquareNameFromRowCol(forwardRow, col));
     }
     // two squares ahead empty, but only on first move
-    if (row === startRow && squares[getIdx(forwardTwoRow, col)].piece.type === pieceTypes.EMPTY_SQUARE) {
+    if (
+      row === startRow &&
+      squares[getIdx(forwardRow, col)].piece.type === pieceTypes.EMPTY_SQUARE &&
+      squares[getIdx(forwardTwoRow, col)].piece.type === pieceTypes.EMPTY_SQUARE
+    ) {
       moves.push(getSquareNameFromRowCol(forwardTwoRow, col));
     }
   };
@@ -32,7 +36,7 @@ const getPawnMoves = (isWhite, row, col, squares) => {
       moves.push(getSquareNameFromRowCol(forwardRow, forwardLeftCol));
     }
     if (forwardRightType !== null && forwardRightType !== pieceTypes.EMPTY_SQUARE && isEnemyPiece(forwardRightType, isWhite)) {
-      moves.push(getSquareNameFromRowCol(forwardRow, forwardLeftCol));
+      moves.push(getSquareNameFromRowCol(forwardRow, forwardRightCol));
     }
   };
 

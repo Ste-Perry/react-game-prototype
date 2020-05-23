@@ -3,9 +3,10 @@ import { getRowColFromSquareName, getSquareNameFromRowCol } from '../utillities/
 import { getIdx } from '../utillities/rowColToIndexUtility';
 import pieceTypes from '../constants/pieceTypes';
 import { isEnemyPiece } from '../utillities/movesUtility';
+import setupGame from '../utillities/gameUtility';
 
 const MoveBox = (entities, { input }) => {
-  const result = {
+  let result = {
     ...entities,
   };
 
@@ -44,6 +45,7 @@ const MoveBox = (entities, { input }) => {
         break;
       }
     }
+    result.gameState.pieceSelected = null;
   };
 
   const highlightLegalMoves = (pieceType, row, col) => {
@@ -58,10 +60,12 @@ const MoveBox = (entities, { input }) => {
     }
   };
 
-  if (payload && payload.pageX >= offset && payload.pageX <= xMax && payload.pageY >= offset && payload.pageY <= yMax) {
+  if (result.gameState.reset) {
+    result = setupGame({});
+  } else if (payload && payload.pageX >= offset && payload.pageX <= xMax && payload.pageY >= offset && payload.pageY <= yMax) {
     const { row, col } = getSquareSelected();
     const pieceType = squares[getIdx(row, col)].piece.type;
-    if (gameState.pieceSelected && pieceType === pieceTypes.EMPTY_SQUARE) {
+    if (gameState.pieceSelected && (pieceType === pieceTypes.EMPTY_SQUARE || isEnemyPiece(pieceType, result.gameState.isWhiteMove))) {
       movePieceIfLegal(row, col);
       resetHighlights();
     } else if (pieceType !== pieceTypes.EMPTY_SQUARE) {
@@ -71,7 +75,7 @@ const MoveBox = (entities, { input }) => {
       resetHighlights();
     }
   }
-  return entities;
+  return result;
 };
 
 export default MoveBox;
