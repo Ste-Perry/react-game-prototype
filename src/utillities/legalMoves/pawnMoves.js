@@ -3,7 +3,7 @@ import { getSquareNameFromRowCol } from '../squareNameUtility';
 import { isEnemyPiece } from '../movesUtility';
 import { getIdx } from '../rowColToIndexUtility';
 
-const getPawnMoves = (isWhite, row, col, squares) => {
+const getPawnMoves = (isWhite, row, col, squares, checkingAttacks = false) => {
   // four possible moves - one forward, two forward,
   // capture left or right (no en passant)
   const moves = [];
@@ -32,17 +32,17 @@ const getPawnMoves = (isWhite, row, col, squares) => {
     const forwardRightCol = col + 1;
     const forwardLeftType = forwardLeftCol >= 0 ? squares[getIdx(forwardRow, forwardLeftCol)].piece.type : null;
     const forwardRightType = forwardRightCol <= 7 ? squares[getIdx(forwardRow, forwardRightCol)].piece.type : null;
-    if (forwardLeftType !== null && forwardLeftType !== pieceTypes.EMPTY_SQUARE && isEnemyPiece(forwardLeftType, isWhite)) {
+    if (checkingAttacks || (forwardLeftType !== pieceTypes.EMPTY_SQUARE && isEnemyPiece(forwardLeftType, isWhite))) {
       moves.push(getSquareNameFromRowCol(forwardRow, forwardLeftCol));
     }
-    if (forwardRightType !== null && forwardRightType !== pieceTypes.EMPTY_SQUARE && isEnemyPiece(forwardRightType, isWhite)) {
+    if (checkingAttacks || (forwardRightType !== pieceTypes.EMPTY_SQUARE && isEnemyPiece(forwardRightType, isWhite))) {
       moves.push(getSquareNameFromRowCol(forwardRow, forwardRightCol));
     }
   };
 
   // forward moves only legal if no attack moves possible
   getPawnAttackMoves();
-  if (moves.length === 0) {
+  if (moves.length === 0 && !checkingAttacks) {
     getPawnForwardMoves();
   }
   return moves;

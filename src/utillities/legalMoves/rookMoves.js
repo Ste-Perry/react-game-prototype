@@ -8,10 +8,11 @@ import {
   incrementer,
   maxBound,
   minBound,
+  isEmptyIfFriendlyCaptured,
 } from '../movesUtility';
 import pieceTypes from '../../constants/pieceTypes';
 
-const getRookMoves = (isWhite, row, col, squares) => {
+const getRookMoves = (isWhite, row, col, squares, checkingAttacks = false) => {
   // many possible moves along any col or row
   const moves = [];
 
@@ -19,7 +20,11 @@ const getRookMoves = (isWhite, row, col, squares) => {
     let curLoc = updateLocation(location);
     while (checkBound(curLoc)) {
       const pieceType = squares[getPieceIndex(curLoc)].piece.type;
-      if (pieceType === pieceTypes.EMPTY_SQUARE || isEnemyPiece(pieceType, isWhite)) {
+      if (
+        isEmptyIfFriendlyCaptured(pieceType, isWhite, checkingAttacks) ||
+        pieceType === pieceTypes.EMPTY_SQUARE ||
+        isEnemyPiece(pieceType, isWhite)
+      ) {
         addMove(curLoc);
         curLoc = updateLocation(curLoc);
         // can't move beyond the enemy piece

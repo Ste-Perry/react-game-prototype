@@ -13,6 +13,10 @@ export const isEnemyPiece = (pieceType, isWhite) => {
   return (targetIsWhite && !isWhite) || (!targetIsWhite && isWhite);
 };
 
+export const isEmptyIfFriendlyCaptured = (pieceType, isWhite, checkingAttacks) => {
+  return checkingAttacks && !isEnemyPiece(pieceType, isWhite);
+};
+
 export const incrementer = count => count + 1;
 export const decrementer = count => count - 1;
 export const minBound = count => count >= 0;

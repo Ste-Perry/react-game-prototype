@@ -1,16 +1,20 @@
 import { getIdx } from '../rowColToIndexUtility';
-import { isEnemyPiece, maxBound, minBound } from '../movesUtility';
+import { isEmptyIfFriendlyCaptured, isEnemyPiece, maxBound, minBound } from '../movesUtility';
 import { getSquareNameFromRowCol } from '../squareNameUtility';
 import pieceTypes from '../../constants/pieceTypes';
 
-const getKnightMoves = (isWhite, row, col, squares) => {
+const getKnightMoves = (isWhite, row, col, squares, checkingAttacks = false) => {
   // arguably the most complicated of all the pieces, as it can jump over and moves
   // to 8 different spots that aren't simply on either the bishop or rook moves
   const moves = [];
   const checkMove = (rowToCheck, colToCheck) => {
     if (minBound(rowToCheck) && maxBound(rowToCheck) && minBound(colToCheck) && maxBound(colToCheck)) {
       const pieceType = squares[getIdx(rowToCheck, colToCheck)].piece.type;
-      if (pieceType === pieceTypes.EMPTY_SQUARE || isEnemyPiece(pieceType, isWhite)) {
+      if (
+        isEmptyIfFriendlyCaptured(pieceType, isWhite, checkingAttacks) ||
+        pieceType === pieceTypes.EMPTY_SQUARE ||
+        isEnemyPiece(pieceType, isWhite)
+      ) {
         moves.push(getSquareNameFromRowCol(rowToCheck, colToCheck));
       }
     }

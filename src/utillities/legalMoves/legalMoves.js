@@ -12,7 +12,7 @@ import { isEnemyPiece } from '../movesUtility';
 const getLegalMoves = (row, col, squares) => {
   const canPieceAttack = (isWhite, pieceType, targetRow, targetCol, pieceRow, pieceCol, getMoves) => {
     if (isEnemyPiece(pieceType, isWhite)) {
-      const possibleMoves = getMoves(!isWhite, pieceRow, pieceCol, squares);
+      const possibleMoves = getMoves(!isWhite, pieceRow, pieceCol, squares, true);
       for (let jdx = 0; jdx < possibleMoves.length; jdx += 1) {
         const { row: moveRow, col: moveCol } = getRowColFromSquareName(possibleMoves[jdx]);
         if (targetRow === moveRow && targetCol === moveCol) {
@@ -23,7 +23,7 @@ const getLegalMoves = (row, col, squares) => {
     return false;
   };
 
-  const getMovesMethodFromType = pieceType => {
+  const getAttackMovesFromType = pieceType => {
     switch (pieceType) {
       case pieceTypes.WHITE_PAWN:
       case pieceTypes.BLACK_PAWN:
@@ -53,7 +53,8 @@ const getLegalMoves = (row, col, squares) => {
     for (let idx = 0; idx < 64; idx += 1) {
       const pieceType = squares[idx].piece.type;
       const { row: pieceRow, col: pieceCol } = getRowCol(idx);
-      if (canPieceAttack(isWhite, pieceType, targetRow, targetCol, pieceRow, pieceCol, getMovesMethodFromType(pieceType))) {
+      if (canPieceAttack(isWhite, pieceType, targetRow, targetCol, pieceRow, pieceCol, getAttackMovesFromType(pieceType))) {
+        console.log(`cannot move to row ${targetRow}, col ${targetCol} - can be attacked by piece ${pieceType} at row ${pieceRow}, col ${pieceCol}`);
         return true;
       }
     }

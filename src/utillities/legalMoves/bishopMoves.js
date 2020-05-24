@@ -1,9 +1,9 @@
 import { getIdx } from '../rowColToIndexUtility';
 import { getSquareNameFromRowCol } from '../squareNameUtility';
 import pieceTypes from '../../constants/pieceTypes';
-import { decrementer, incrementer, isEnemyPiece, maxBound, minBound } from '../movesUtility';
+import { decrementer, incrementer, isEmptyIfFriendlyCaptured, isEnemyPiece, maxBound, minBound } from '../movesUtility';
 
-const getBishopMoves = (isWhite, row, col, squares) => {
+const getBishopMoves = (isWhite, row, col, squares, checkingAttacks = false) => {
   // many possible moves along any diagonal
   const moves = [];
 
@@ -12,7 +12,11 @@ const getBishopMoves = (isWhite, row, col, squares) => {
     let curCol = updateColLocation(col);
     while (checkRowBound(curRow) && checkColBound(curCol)) {
       const pieceType = squares[getIdx(curRow, curCol)].piece.type;
-      if (pieceType === pieceTypes.EMPTY_SQUARE || isEnemyPiece(pieceType, isWhite)) {
+      if (
+        isEmptyIfFriendlyCaptured(pieceType, isWhite, checkingAttacks) ||
+        pieceType === pieceTypes.EMPTY_SQUARE ||
+        isEnemyPiece(pieceType, isWhite)
+      ) {
         moves.push(getSquareNameFromRowCol(curRow, curCol));
         curRow = updateRowLocation(curRow);
         curCol = updateColLocation(curCol);
@@ -21,7 +25,7 @@ const getBishopMoves = (isWhite, row, col, squares) => {
           break;
         }
       } else {
-        break; // must be our piece
+        break; // must be our piece and ignoreFriendlies is false
       }
     }
   };
