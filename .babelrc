@@ -5,7 +5,33 @@
       {
         "regenerator": true
       }
-    ]
+    ],
+    ["module-resolver", {
+      "root": ["./src"],
+      "extensions": [
+        ".js",
+        ".jsx",
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".svg",
+        ".gif",
+        ".css",
+        ".scss",
+        ".sass"
+      ],
+      "alias": {
+        "@components": "./src/components",
+        "@constants": "./src/constants",
+        "@img": "./src/img",
+        "@models": "./src/models",
+        "@pages": "./src/pages",
+        "@redux": "./src/redux",
+        "@styles": "./src/styles",
+        "@systems": "./src/systems",
+        "@utilities": "./src/utilities",
+      }
+    }]
   ],
   "presets": [
     [

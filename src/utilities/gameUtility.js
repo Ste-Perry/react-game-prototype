@@ -21,7 +21,6 @@ const setupGame = () => {
     entities.gameStatsDisplay = {
       gameState,
       resetGame: () => {
-        alert('resetting!');
         entities.gameState.reset = true;
       },
       renderer: <GameStatsDisplay />,
@@ -29,7 +28,6 @@ const setupGame = () => {
     entities.squares = squares;
     entities.gameState = gameState;
     entities.resetGame = () => {
-      alert('resetting!');
       entities.gameState.reset = true;
     };
   });

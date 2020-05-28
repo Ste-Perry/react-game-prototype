@@ -1,11 +1,13 @@
-import getLegalMoves from '../utillities/legalMoves';
-import { getRowColFromSquareName, getSquareNameFromRowCol } from '../utillities/squareNameUtility';
-import { getIdx } from '../utillities/rowColToIndexUtility';
+import getLegalMoves from '@utilities/legalMoves';
+import store from '@redux/store';
+import { addMove, resetMoves } from '@redux/actions/moves-actions';
+import { getRowColFromSquareName, getSquareNameFromRowCol } from '../utilities/squareNameUtility';
+import { getIdx } from '../utilities/rowColToIndexUtility';
 import pieceTypes from '../constants/pieceTypes';
-import { isEnemyPiece } from '../utillities/movesUtility';
-import setupGame from '../utillities/gameUtility';
+import { isEnemyPiece } from '../utilities/movesUtility';
+import setupGame from '../utilities/gameUtility';
 
-const MoveBox = (entities, { input }) => {
+const MovesSystem = (entities, { input }) => {
   let result = {
     ...entities,
   };
@@ -41,6 +43,7 @@ const MoveBox = (entities, { input }) => {
         // lets do this!
         result.squares[getIdx(row, col)].piece.type = pieceType;
         result.squares[getIdx(pieceRow, pieceCol)].piece.type = pieceTypes.EMPTY_SQUARE;
+        store.dispatch(addMove(getSquareNameFromRowCol(pieceRow, pieceCol), getSquareNameFromRowCol(row, col), result.gameState.isWhiteMove));
         result.gameState.isWhiteMove = !result.gameState.isWhiteMove;
         break;
       }
@@ -62,6 +65,7 @@ const MoveBox = (entities, { input }) => {
 
   if (result.gameState.reset) {
     result = setupGame({});
+    store.dispatch(resetMoves());
   } else if (payload && payload.pageX >= offset && payload.pageX <= xMax && payload.pageY >= offset && payload.pageY <= yMax) {
     const { row, col } = getSquareSelected();
     const pieceType = squares[getIdx(row, col)].piece.type;
@@ -78,4 +82,4 @@ const MoveBox = (entities, { input }) => {
   return result;
 };
 
-export default MoveBox;
+export default MovesSystem;

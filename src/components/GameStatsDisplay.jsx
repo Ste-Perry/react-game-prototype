@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import MovesList from './MovesList';
 
 const GameStatsDisplay = ({ gameState, resetGame }) => {
   return (
@@ -25,6 +26,9 @@ const GameStatsDisplay = ({ gameState, resetGame }) => {
               <strong>Current Move:</strong>
               &nbsp;
               {gameState.isWhiteMove ? 'white' : 'black'}
+            </td>
+            <td rowSpan={2}>
+              <MovesList />
             </td>
           </tr>
           <tr>

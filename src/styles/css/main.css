@@ -1,0 +1,26 @@
+.noselect {
+    cursor: default;
+    resize: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.noselect:focus {
+    outline: none;
+}
+
+.scrollable {
+    overflow-y: scroll;
+}
+
+.moves {
+    border: solid 1px white;
+    width: 280px;
+    height: 120px;
+    font-size: 18px;
+    padding: 5px;
+}

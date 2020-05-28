@@ -1,8 +1,8 @@
 import React from 'react';
 import 'regenerator-runtime/runtime';
 import { GameEngine } from 'react-game-engine';
-import MoveBox from '../systems/MoveBox';
-import setupGame from '../utillities/gameUtility';
+import MovesSystem from '../systems/MovesSystem';
+import setupGame from '../utilities/gameUtility';
 
 const SimpleGame = () => {
   const entities = setupGame();
@@ -16,7 +16,7 @@ const SimpleGame = () => {
         width: 802,
         height: 1010,
       }}
-      systems={[MoveBox]}
+      systems={[MovesSystem]}
       entities={entities}
     />
   );

@@ -11,5 +11,22 @@
     "prettier/prettier": ["error"],
     "import/no-extraneous-dependencies": 0,
     "react/jsx-filename-extension": 0
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@components", "./src/components"],
+          ["@constants", "./src/constants"],
+          ["@img", "./src/img"],
+          ["@models", "./src/models"],
+          ["@pages", "./src/pages"],
+          ["@redux", "./src/redux"],
+          ["@styles", "./src/styles"],
+          ["@systems", "./src/systems"],
+          ["@utilities", "./src/utilities"]
+        ]
+      }
+    }
   }
 }
