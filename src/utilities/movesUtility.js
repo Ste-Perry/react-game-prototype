@@ -1,6 +1,6 @@
-import pieceTypes from '../constants/pieceTypes';
-import { getIdx } from './rowColToIndexUtility';
-import { getSquareNameFromRowCol } from './squareNameUtility';
+import pieceTypes from '@constants/pieceTypes';
+import { getIdx } from '@utilities/rowColToIndexUtility';
+import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
 
 export const isEnemyPiece = (pieceType, isWhite) => {
   const targetIsWhite =

@@ -1,6 +1,6 @@
-import pt from '../constants/pieceTypes';
-import square from '../models/square';
-import { getIdx } from './rowColToIndexUtility';
+import pt from '@constants/pieceTypes';
+import square from '@models/square';
+import { getIdx } from '@utilities/rowColToIndexUtility';
 
 const defaultBoardSetup = [
   pt.BLACK_ROOK,
@@ -110,7 +110,7 @@ const validateBoardSetup = setup => {
   });
 };
 
-const squareFactory = (initialSetup = defaultBoardSetup) => {
+export const buildSquares = (initialSetup = defaultBoardSetup) => {
   validateBoardSetup(initialSetup);
   const squares = [];
   for (let row = 0; row < 8; row += 1) {
@@ -120,5 +120,3 @@ const squareFactory = (initialSetup = defaultBoardSetup) => {
   }
   return squares;
 };
-
-export default squareFactory;

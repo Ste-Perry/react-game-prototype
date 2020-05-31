@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import store from '@redux/store';
+import { resetGame } from '@redux/actions/game-actions';
 import MovesList from './MovesList';
 
-const GameStatsDisplay = ({ gameState, resetGame }) => {
+const GameStatsDisplay = ({ gameState }) => {
   return (
     <div
       style={{
@@ -42,7 +44,7 @@ const GameStatsDisplay = ({ gameState, resetGame }) => {
                   color: 'white',
                 }}
                 type="button"
-                onClick={resetGame}
+                onClick={() => store.dispatch(resetGame())}
               >
                 Reset Board
               </button>
@@ -56,11 +58,9 @@ const GameStatsDisplay = ({ gameState, resetGame }) => {
 
 GameStatsDisplay.propTypes = {
   gameState: PropTypes.shape(),
-  resetGame: PropTypes.func,
 };
 GameStatsDisplay.defaultProps = {
   gameState: {},
-  resetGame: undefined,
 };
 
 export default GameStatsDisplay;

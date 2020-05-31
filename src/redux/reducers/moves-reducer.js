@@ -1,4 +1,4 @@
-import { ADD_MOVE, RESET_MOVES } from '../actionNames';
+import { ADD_MOVE, RESET_GAME } from '../actionNames';
 
 const initialState = {
   movesList: [],
@@ -6,7 +6,7 @@ const initialState = {
 
 const movesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case RESET_MOVES:
+    case RESET_GAME:
       return {
         ...state,
         movesList: [],

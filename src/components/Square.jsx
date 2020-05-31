@@ -58,7 +58,7 @@ const Square = ({ square }) => {
         top,
       }}
     >
-      {square.piece.type !== pieceTypes.EMPTY_SQUARE && (
+      {square.piece && square.piece.type !== pieceTypes.EMPTY_SQUARE && (
         <div
           style={{
             display: 'table-cell',
