@@ -1,23 +1,21 @@
-import { ADD_MOVE, RESET_GAME } from '../actionNames';
+import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
+import { ADD_MOVE, RESET_GAME } from '@redux/actionNames';
 
-const initialState = {
-  movesList: [],
+const initialMoves = [];
+
+const getMoveDescription = action => {
+  const { from, to, isWhite } = action;
+  return `${isWhite ? 'WHITE' : 'BLACK'}: ${getSquareNameFromRowCol(from.row, from.col)}-${getSquareNameFromRowCol(to.row, to.col)}`;
 };
 
-const movesReducer = (state = initialState, action) => {
+const movesReducer = (moves = initialMoves, action) => {
   switch (action.type) {
     case RESET_GAME:
-      return {
-        ...state,
-        movesList: [],
-      };
+      return initialMoves;
     case ADD_MOVE:
-      return {
-        ...state,
-        movesList: [...state.movesList, action.move],
-      };
+      return [...moves, getMoveDescription(action)];
     default:
-      return state;
+      return moves;
   }
 };
 

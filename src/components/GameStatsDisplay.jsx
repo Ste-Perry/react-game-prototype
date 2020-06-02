@@ -1,10 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import store from '@redux/store';
 import { resetGame } from '@redux/actions/game-actions';
 import MovesList from './MovesList';
 
-const GameStatsDisplay = ({ gameState }) => {
+const GameStatsDisplay = () => {
+  const { game } = store.getState();
   return (
     <div
       style={{
@@ -27,7 +27,7 @@ const GameStatsDisplay = ({ gameState }) => {
             <td>
               <strong>Current Move:</strong>
               &nbsp;
-              {gameState.isWhiteMove ? 'white' : 'black'}
+              {game.isWhiteMove ? 'white' : 'black'}
             </td>
             <td rowSpan={2}>
               <MovesList />
@@ -54,13 +54,6 @@ const GameStatsDisplay = ({ gameState }) => {
       </table>
     </div>
   );
-};
-
-GameStatsDisplay.propTypes = {
-  gameState: PropTypes.shape(),
-};
-GameStatsDisplay.defaultProps = {
-  gameState: {},
 };
 
 export default GameStatsDisplay;

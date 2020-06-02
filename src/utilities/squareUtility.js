@@ -1,6 +1,7 @@
 import pt from '@constants/pieceTypes';
 import square from '@models/square';
 import { getIdx } from '@utilities/rowColToIndexUtility';
+import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
 
 const defaultBoardSetup = [
   pt.BLACK_ROOK,
@@ -120,3 +121,17 @@ export const buildSquares = (initialSetup = defaultBoardSetup) => {
   }
   return squares;
 };
+
+export const getSquareSelected = location => {
+  const zoneSize = 100;
+  const col = Math.floor(location.pageX / zoneSize);
+  const row = Math.floor(location.pageY / zoneSize);
+  console.log(`clicked on square ${getSquareNameFromRowCol(row, col)}`);
+  return { row, col };
+};
+
+const inBoundsX = ({ location, offset, xMax }) => location.pageX >= offset && location.pageX <= xMax;
+const inBoundsY = ({ location, offset, yMax }) => location.pageY >= offset && location.pageY <= yMax;
+
+export const inBounds = ({ location, offset, xMax, yMax }) =>
+  location && inBoundsX({ location, offset, xMax }) && inBoundsY({ location, offset, yMax });

@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import pieceTypes from '../constants/pieceTypes';
-import images from '../img/images';
+import store from '@redux/store';
+import { getRowColFromSquareName } from '@utilities/squareNameUtility';
+import pieceTypes from '@constants/pieceTypes';
+import images from '@img/images';
 
-// box coordinates are absolute, not relative to gameboard
-const Square = ({ square }) => {
+// box coordinates are absolute, not relative to game board
+const Square = ({ idx, squareName }) => {
   const size = 100;
-  const { row, col } = square;
+  const { row, col } = getRowColFromSquareName(squareName);
+  const square = store.getState().squares[idx];
   const left = col * size;
   const top = row * size;
 
@@ -74,10 +77,12 @@ const Square = ({ square }) => {
 };
 
 Square.propTypes = {
-  square: PropTypes.shape(),
+  idx: PropTypes.number,
+  squareName: PropTypes.string,
 };
 Square.defaultProps = {
-  square: {},
+  idx: -1,
+  squareName: '',
 };
 
 export default Square;

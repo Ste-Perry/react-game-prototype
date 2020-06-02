@@ -2,10 +2,10 @@ import React from 'react';
 import store from '@redux/store';
 
 const MovesList = () => {
-  const { movesList } = store.getState().moves;
+  const { moves } = store.getState();
   return (
     <div className="noselect scrollable moves">
-      {movesList.map(move => (
+      {moves.map(move => (
         <div>{move}</div>
       ))}
     </div>

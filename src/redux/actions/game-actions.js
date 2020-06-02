@@ -4,9 +4,10 @@ export const switchPlayer = () => ({
   type: SWITCH_PLAYER,
 });
 
-export const setPieceSelected = squareName => ({
+export const setPieceSelected = (row, col) => ({
   type: PIECE_SELECTED,
-  squareName,
+  row,
+  col,
 });
 
 export const clearPieceSelected = () => ({

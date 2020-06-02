@@ -1,11 +1,8 @@
-// tracking moves
 export const ADD_MOVE = 'ADD_MOVE';
-
-// overall game state
-export const PIECE_SELECTED = 'PIECE_SELECTED';
 export const CLEAR_PIECE_SELECTED = 'CLEAR_PIECE_SELECTED';
-export const SWITCH_PLAYER = 'SWITCH_PLAYER';
+export const HIGHLIGHT_LEGAL_MOVES = 'HIGHLIGHT_LEGAL_MOVES';
+export const MOVE_PIECE = 'MOVE_PIECE';
+export const PIECE_SELECTED = 'PIECE_SELECTED';
 export const RESET_GAME = 'RESET_GAME';
-
-// squares
 export const RESET_HIGHLIGHTS = 'RESET_HIGHLIGHTS';
+export const SWITCH_PLAYER = 'SWITCH_PLAYER';

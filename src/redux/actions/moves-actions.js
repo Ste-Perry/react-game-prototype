@@ -1,6 +1,8 @@
 import { ADD_MOVE } from '../actionNames';
 
-export const addMove = (fromSquare, toSquare, isWhite) => ({
+export const addMove = ({ from, to, isWhite }) => ({
   type: ADD_MOVE,
-  move: `${isWhite ? 'WHITE' : 'BLACK'}: ${fromSquare}-${toSquare}`,
+  from,
+  to,
+  isWhite,
 });
