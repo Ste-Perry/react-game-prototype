@@ -53,8 +53,8 @@ export const getRowColFromSquareName = name => ({
 export const getSquareNameFromRowCol = (row, col) => `${colMap[col]}${rowMap[row]}`;
 
 export const getIdxFromSquareName = name => {
-  const { row, col } = getRowColFromSquareName(name);
-  return getIdx(row, col);
+  const location = getRowColFromSquareName(name);
+  return getIdx(location);
 };
 
 export const getAllSquareNames = () => cartesianOfArrays(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], ['1', '2', '3', '4', '5', '6', '7', '8']);

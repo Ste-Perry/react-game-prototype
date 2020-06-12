@@ -1,6 +1,6 @@
 import pieceTypes from '@constants/pieceTypes';
-import { getIdx } from '@utilities/rowColToIndexUtility';
 import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
+import { getIdxFromRowCol } from './rowColToIndexUtility';
 
 export const isEnemyPiece = (pieceType, isWhite) => {
   const targetIsWhite =
@@ -19,9 +19,10 @@ export const isEmptyIfFriendlyCaptured = (pieceType, isWhite, checkingAttacks) =
 
 export const incrementer = count => count + 1;
 export const decrementer = count => count - 1;
-export const minBound = count => count >= 0;
-export const maxBound = count => count <= 7;
-export const getFromCurRow = col => curRow => getIdx(curRow, col);
-export const getFromCurCol = row => curCol => getIdx(row, curCol);
+export const minBound = rowOrCol => rowOrCol >= 0;
+export const maxBound = rowOrCol => rowOrCol <= 7;
+export const minMaxBound = rowOrCol => minBound(rowOrCol) && maxBound(rowOrCol);
+export const getFromCurRow = col => curRow => getIdxFromRowCol(curRow, col);
+export const getFromCurCol = row => curCol => getIdxFromRowCol(row, curCol);
 export const addMoveFromCurRow = (moves, col) => curRow => moves.push(getSquareNameFromRowCol(curRow, col));
 export const addMoveFromCurCol = (moves, row) => curCol => moves.push(getSquareNameFromRowCol(row, curCol));

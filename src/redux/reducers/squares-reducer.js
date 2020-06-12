@@ -24,16 +24,16 @@ const highlightPieceToMove = (squares, index) => {
 const highlightLegalMoves = (squares, moves) => {
   const result = [...squares];
   moves.forEach(move => {
-    const { row: moveRow, col: moveCol } = getRowColFromSquareName(move);
-    result[getIdx(moveRow, moveCol)].highlightedSquareToMoveTo = true;
+    const location = getRowColFromSquareName(move);
+    result[getIdx(location)].highlightedSquareToMoveTo = true;
   });
   return result;
 };
 
 const movePiece = (squares, from, to) => {
   const result = [...squares];
-  const fromIdx = getIdx(from.row, from.col);
-  const toIdx = getIdx(to.row, to.col);
+  const fromIdx = getIdx(from);
+  const toIdx = getIdx(to);
   const pieceType = result[fromIdx].piece.type;
   result[fromIdx].piece.type = pieceTypes.EMPTY_SQUARE;
   result[toIdx].piece.type = pieceType;

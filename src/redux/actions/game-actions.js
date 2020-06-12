@@ -4,7 +4,7 @@ export const switchPlayer = () => ({
   type: SWITCH_PLAYER,
 });
 
-export const setPieceSelected = (row, col) => ({
+export const setPieceSelected = ({ row, col }) => ({
   type: PIECE_SELECTED,
   row,
   col,

@@ -1,9 +1,11 @@
-import getRookMoves from './rookMoves';
-import getBishopMoves from './bishopMoves';
+import { getRookMoves, isLegalRookMove } from './rookMoves';
+import { getBishopMoves, isLegalBishopMove } from './bishopMoves';
 
-const getQueenMoves = (isWhite, row, col, squares, checkingAttacks = false) => {
+export const getQueenMoves = ({ isWhite, from, squares, checkingAttacks = false }) => {
   // combo of rook and bishop moves - borrow from them
-  return [...getRookMoves(isWhite, row, col, squares, checkingAttacks), ...getBishopMoves(isWhite, row, col, squares, checkingAttacks)];
+  return [...getRookMoves({ isWhite, from, squares, checkingAttacks }), ...getBishopMoves({ isWhite, from, squares, checkingAttacks })];
 };
 
-export default getQueenMoves;
+export const isLegalQueenMove = ({ from, to, squares }) => {
+  return isLegalRookMove({ from, to, squares }) || isLegalBishopMove({ from, to, squares });
+};

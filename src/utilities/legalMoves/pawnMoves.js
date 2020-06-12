@@ -1,26 +1,27 @@
 import pieceTypes from '../../constants/pieceTypes';
-import { getSquareNameFromRowCol } from '../squareNameUtility';
+import { getRowColFromSquareName, getSquareNameFromRowCol } from '../squareNameUtility';
 import { isEnemyPiece } from '../movesUtility';
-import { getIdx } from '../rowColToIndexUtility';
+import { getIdxFromRowCol } from '../rowColToIndexUtility';
 
-const getPawnMoves = (isWhite, row, col, squares, checkingAttacks = false) => {
+export const getPawnMoves = ({ isWhite, from, squares, checkingAttacks = false }) => {
   // four possible moves - one forward, two forward,
   // capture left or right (no en passant)
   const moves = [];
+  const { row, col } = from;
 
   const getPawnForwardMoves = () => {
     const forwardRow = isWhite ? row - 1 : row + 1;
     const forwardTwoRow = isWhite ? 4 : 3;
     const startRow = isWhite ? 6 : 1;
     // one square ahead is empty
-    if (squares[getIdx(forwardRow, col)].piece.type === pieceTypes.EMPTY_SQUARE) {
+    if (squares[getIdxFromRowCol(forwardRow, col)].piece.type === pieceTypes.EMPTY_SQUARE) {
       moves.push(getSquareNameFromRowCol(forwardRow, col));
     }
     // two squares ahead empty, but only on first move
     if (
       row === startRow &&
-      squares[getIdx(forwardRow, col)].piece.type === pieceTypes.EMPTY_SQUARE &&
-      squares[getIdx(forwardTwoRow, col)].piece.type === pieceTypes.EMPTY_SQUARE
+      squares[getIdxFromRowCol(forwardRow, col)].piece.type === pieceTypes.EMPTY_SQUARE &&
+      squares[getIdxFromRowCol(forwardTwoRow, col)].piece.type === pieceTypes.EMPTY_SQUARE
     ) {
       moves.push(getSquareNameFromRowCol(forwardTwoRow, col));
     }
@@ -30,8 +31,8 @@ const getPawnMoves = (isWhite, row, col, squares, checkingAttacks = false) => {
     const forwardRow = isWhite ? row - 1 : row + 1;
     const forwardLeftCol = col - 1;
     const forwardRightCol = col + 1;
-    const forwardLeftType = forwardLeftCol >= 0 ? squares[getIdx(forwardRow, forwardLeftCol)].piece.type : null;
-    const forwardRightType = forwardRightCol <= 7 ? squares[getIdx(forwardRow, forwardRightCol)].piece.type : null;
+    const forwardLeftType = forwardLeftCol >= 0 ? squares[getIdxFromRowCol(forwardRow, forwardLeftCol)].piece.type : null;
+    const forwardRightType = forwardRightCol <= 7 ? squares[getIdxFromRowCol(forwardRow, forwardRightCol)].piece.type : null;
     if (checkingAttacks || (forwardLeftType !== pieceTypes.EMPTY_SQUARE && isEnemyPiece(forwardLeftType, isWhite))) {
       moves.push(getSquareNameFromRowCol(forwardRow, forwardLeftCol));
     }
@@ -48,4 +49,20 @@ const getPawnMoves = (isWhite, row, col, squares, checkingAttacks = false) => {
   return moves;
 };
 
-export default getPawnMoves;
+export const isLegalPawnMove = ({ from, to, squares }) => {
+  const { row: fromRow, col: fromCol } = from;
+  const { row: toRow, col: toCol } = to;
+  const pieceType = squares[getIdxFromRowCol(fromRow, fromCol)].piece.type;
+
+  if (pieceType !== pieceTypes.WHITE_PAWN || pieceType !== pieceTypes.BLACK_PAWN) {
+    throw Error(`unexpected piece type ${pieceType} when checking legal pawn moves`);
+  }
+  const moves = getPawnMoves({ isWhite: pieceType === pieceTypes.WHITE_PAWN, from, squares });
+  for (let idx = 0; idx < moves.length; idx += 1) {
+    const { row: moveRow, col: moveCol } = getRowColFromSquareName(moves[idx]);
+    if (moveRow === toRow && moveCol === toCol) {
+      return true;
+    }
+  }
+  return false;
+};

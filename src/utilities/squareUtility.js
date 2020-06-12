@@ -1,7 +1,7 @@
 import pt from '@constants/pieceTypes';
 import square from '@models/square';
-import { getIdx } from '@utilities/rowColToIndexUtility';
 import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
+import { getIdxFromRowCol } from './rowColToIndexUtility';
 
 const defaultBoardSetup = [
   pt.BLACK_ROOK,
@@ -116,7 +116,7 @@ export const buildSquares = (initialSetup = defaultBoardSetup) => {
   const squares = [];
   for (let row = 0; row < 8; row += 1) {
     for (let col = 0; col < 8; col += 1) {
-      squares.push(square(row, col, initialSetup[getIdx(row, col)]));
+      squares.push(square(row, col, initialSetup[getIdxFromRowCol(row, col)]));
     }
   }
   return squares;

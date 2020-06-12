@@ -1,7 +1,7 @@
 import { HIGHLIGHT_LEGAL_MOVES, MOVE_PIECE, RESET_HIGHLIGHTS } from '@redux/actionNames';
 import { isEnemyPiece } from '@utilities/movesUtility';
 import { clearPieceSelected, setPieceSelected, switchPlayer } from '@redux/actions/game-actions';
-import getLegalMoves from '@utilities/legalMoves';
+import { getLegalMoves, isLegalMove } from '@utilities/legalMoves';
 import { getRowColFromSquareName } from '@utilities/squareNameUtility';
 import { addMove } from '@redux/actions/moves-actions';
 import { getIdx } from '@utilities/rowColToIndexUtility';
@@ -9,41 +9,34 @@ import pieceTypes from '@constants/pieceTypes';
 
 export const resetHighlights = () => ({ type: RESET_HIGHLIGHTS });
 
-export const highlightLegalMoves = ({ game, squares, pieceType, row, col }) => dispatch => {
+export const highlightLegalMoves = ({ game, squares, pieceType, from }) => dispatch => {
   if (!isEnemyPiece(pieceType, game.isWhiteMove)) {
-    dispatch(setPieceSelected(row, col));
-    dispatch({ type: HIGHLIGHT_LEGAL_MOVES, moves: getLegalMoves(row, col, squares) });
+    dispatch(setPieceSelected(from));
+    dispatch({ type: HIGHLIGHT_LEGAL_MOVES, moves: getLegalMoves({ from, squares }) });
   }
 };
 
 const movePiece = ({ from, to }) => ({ type: MOVE_PIECE, from, to });
 
-export const movePieceIfLegal = ({ game, squares, row, col }) => dispatch => {
-  const { row: pieceRow, col: pieceCol } = getRowColFromSquareName(game.pieceSelected);
-  const moves = getLegalMoves(pieceRow, pieceCol, squares);
-  for (let idx = 0; idx < moves.length; idx += 1) {
-    const { row: moveRow, col: moveCol } = getRowColFromSquareName(moves[idx]);
-    if (moveRow === row && moveCol === col) {
-      // lets do this!
-      const from = { row: pieceRow, col: pieceCol };
-      const to = { row, col };
-      dispatch(movePiece({ from, to }));
-      dispatch(addMove({ from, to, isWhite: game.isWhiteMove }));
-      dispatch(switchPlayer());
-      break;
-    }
+export const movePieceIfLegal = ({ game, squares, to }) => dispatch => {
+  const from = getRowColFromSquareName(game.pieceSelected);
+  if (isLegalMove({ from, to, squares })) {
+    // lets do this!
+    dispatch(movePiece({ from, to }));
+    dispatch(addMove({ from, to, isWhite: game.isWhiteMove }));
+    dispatch(switchPlayer());
   }
   dispatch(clearPieceSelected());
 };
 
-export const squareClicked = ({ game, squares, row, col }) => dispatch => {
-  const pieceType = squares[getIdx(row, col)].piece.type;
+export const squareClicked = ({ game, squares, from }) => dispatch => {
+  const pieceType = squares[getIdx(from)].piece.type;
   if (game.pieceSelected && (pieceType === pieceTypes.EMPTY_SQUARE || isEnemyPiece(pieceType, game.isWhiteMove))) {
-    dispatch(movePieceIfLegal({ game, squares, row, col }));
+    dispatch(movePieceIfLegal({ game, squares, from }));
     dispatch(resetHighlights());
   } else if (pieceType !== pieceTypes.EMPTY_SQUARE) {
     dispatch(resetHighlights());
-    dispatch(highlightLegalMoves({ game, squares, pieceType, row, col }));
+    dispatch(highlightLegalMoves({ game, squares, pieceType, from }));
   } else {
     dispatch(resetHighlights());
   }

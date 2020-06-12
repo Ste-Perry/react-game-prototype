@@ -1,34 +1,59 @@
-import { getIdx } from '../rowColToIndexUtility';
-import { isEmptyIfFriendlyCaptured, isEnemyPiece, maxBound, minBound } from '../movesUtility';
+import { getIdxFromRowCol } from '../rowColToIndexUtility';
+import { isEmptyIfFriendlyCaptured, isEnemyPiece, maxBound, minBound, minMaxBound } from '../movesUtility';
 import { getSquareNameFromRowCol } from '../squareNameUtility';
 import pieceTypes from '../../constants/pieceTypes';
 
-const getKingMoves = (isWhite, row, col, squares, checkingAttacks = false) => {
+const checkMove = ({ isWhite, checkRow, checkCol, checkRowBound, checkColBound, squares, checkingAttacks = false }) => {
+  if (checkRowBound(checkRow) && checkColBound(checkCol)) {
+    const pieceType = squares[getIdxFromRowCol(checkRow, checkCol)].piece.type;
+    if (isEmptyIfFriendlyCaptured(pieceType, isWhite, checkingAttacks) || pieceType === pieceTypes.EMPTY_SQUARE || isEnemyPiece(pieceType, isWhite)) {
+      return true;
+    }
+    console.log(`can't move to row ${checkRow}, col ${checkCol} - square is friendly piece of type ${pieceType}`);
+    return false;
+  }
+  return false;
+};
+
+export const getKingMoves = ({ isWhite, from, squares, checkingAttacks = false }) => {
+  const { row, col } = from;
   const moves = [];
-  const checkMove = (checkRow, checkCol, checkRowBound, checkColBound) => {
-    if (checkRowBound(checkRow) && checkColBound(checkCol)) {
-      const pieceType = squares[getIdx(checkRow, checkCol)].piece.type;
-      if (
-        isEmptyIfFriendlyCaptured(pieceType, isWhite, checkingAttacks) ||
-        pieceType === pieceTypes.EMPTY_SQUARE ||
-        isEnemyPiece(pieceType, isWhite)
-      ) {
-        moves.push(getSquareNameFromRowCol(checkRow, checkCol));
-      } else {
-        console.log(`can't move to row ${checkRow}, col ${checkCol} - square is friendly piece of type ${pieceType}`);
-      }
+
+  const checkMoveAndPush = (checkRow, checkCol, checkRowBound, checkColBound) => {
+    if (checkMove({ isWhite, checkRow, checkCol, checkRowBound, checkColBound, squares, checkingAttacks })) {
+      moves.push(getSquareNameFromRowCol(checkRow, checkCol));
     }
   };
-  checkMove(row - 1, col + 1, minBound, maxBound); // north east
-  checkMove(row, col + 1, () => true, maxBound); // east
-  checkMove(row + 1, col + 1, maxBound, maxBound); // south east
-  checkMove(row + 1, col, maxBound, () => true); // south
-  checkMove(row + 1, col - 1, maxBound, minBound); // south west
-  checkMove(row, col - 1, () => true, minBound); // west
-  checkMove(row - 1, col - 1, minBound, minBound); // north west
-  checkMove(row - 1, col, minBound, () => true); // north
 
+  checkMoveAndPush(row - 1, col + 1, minBound, maxBound); // north east
+  checkMoveAndPush(row, col + 1, () => true, maxBound); // east
+  checkMoveAndPush(row + 1, col + 1, maxBound, maxBound); // south east
+  checkMoveAndPush(row + 1, col, maxBound, () => true); // south
+  checkMoveAndPush(row + 1, col - 1, maxBound, minBound); // south west
+  checkMoveAndPush(row, col - 1, () => true, minBound); // west
+  checkMoveAndPush(row - 1, col - 1, minBound, minBound); // north west
+  checkMoveAndPush(row - 1, col, minBound, () => true); // north
   return moves;
 };
 
-export default getKingMoves;
+export const isLegalKingMove = ({ from, to, squares }) => {
+  const { row: fromRow, col: fromCol } = from;
+  const { row: toRow, col: toCol } = to;
+  const pieceType = squares[getIdxFromRowCol(fromRow, fromCol)].piece.type;
+
+  if (pieceType !== pieceTypes.WHITE_KING || pieceType !== pieceTypes.BLACK_KING) {
+    throw Error(`unexpected piece type ${pieceType} when checking legal king moves`);
+  }
+
+  if (Math.abs(fromRow - toRow) > 1 || Math.abs(fromCol - toCol) > 1) {
+    return false;
+  }
+  return checkMove({
+    isWhite: pieceType === pieceTypes.WHITE_KING,
+    checkRow: toRow,
+    checkCol: toCol,
+    checkRowBound: minMaxBound,
+    checkColBound: minMaxBound,
+    squares,
+  });
+};

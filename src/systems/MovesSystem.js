@@ -13,8 +13,8 @@ const MovesSystem = (entities, { input }) => {
   const { payload } = input.find(x => x.name === 'onMouseDown') || {};
 
   if (inBounds({ location: payload, offset, xMax, yMax })) {
-    const { row, col } = getSquareSelected(payload);
-    store.dispatch(squareClicked({ game, squares, row, col }));
+    const from = getSquareSelected(payload);
+    store.dispatch(squareClicked({ game, squares, from }));
   }
   return result;
 };
