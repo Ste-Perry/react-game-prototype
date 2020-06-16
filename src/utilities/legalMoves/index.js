@@ -64,7 +64,7 @@ const getLegalKingMoves = ({ isWhite, from, squares }) => {
 };
 
 export const getLegalMoves = ({ from, squares }) => {
-  const pieceType = squares[getIdx(from.row, from.col)].piece.type;
+  const pieceType = squares[getIdx(from)].piece.type;
   let moves;
   switch (pieceType) {
     case pieceTypes.BLACK_PAWN:
@@ -100,7 +100,7 @@ export const getLegalMoves = ({ from, squares }) => {
 };
 
 export const isLegalMove = ({ from, to, squares }) => {
-  const pieceType = squares[getIdx(from.row, from.col)].piece.type;
+  const pieceType = squares[getIdx(from)].piece.type;
   let isLegal;
   switch (pieceType) {
     case pieceTypes.BLACK_PAWN:

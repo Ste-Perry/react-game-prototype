@@ -1,7 +1,7 @@
-import { getIdxFromRowCol } from '../rowColToIndexUtility';
-import { isEmptyIfFriendlyCaptured, isEnemyPiece, maxBound, minBound, minMaxBound } from '../movesUtility';
-import { getSquareNameFromRowCol } from '../squareNameUtility';
-import pieceTypes from '../../constants/pieceTypes';
+import { getIdx, getIdxFromRowCol } from '@utilities/rowColToIndexUtility';
+import { isEmptyIfFriendlyCaptured, isEnemyPiece, maxBound, minBound, minMaxBound } from '@utilities/movesUtility';
+import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
+import pieceTypes from '@constants/pieceTypes';
 
 const checkMove = ({ isWhite, checkRow, checkCol, checkRowBound, checkColBound, squares, checkingAttacks = false }) => {
   if (checkRowBound(checkRow) && checkColBound(checkCol)) {
@@ -39,9 +39,9 @@ export const getKingMoves = ({ isWhite, from, squares, checkingAttacks = false }
 export const isLegalKingMove = ({ from, to, squares }) => {
   const { row: fromRow, col: fromCol } = from;
   const { row: toRow, col: toCol } = to;
-  const pieceType = squares[getIdxFromRowCol(fromRow, fromCol)].piece.type;
+  const pieceType = squares[getIdx(from)].piece.type;
 
-  if (pieceType !== pieceTypes.WHITE_KING || pieceType !== pieceTypes.BLACK_KING) {
+  if (pieceType !== pieceTypes.WHITE_KING && pieceType !== pieceTypes.BLACK_KING) {
     throw Error(`unexpected piece type ${pieceType} when checking legal king moves`);
   }
 

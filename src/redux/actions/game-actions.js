@@ -1,16 +1,16 @@
-import { CLEAR_PIECE_SELECTED, PIECE_SELECTED, RESET_GAME, SWITCH_PLAYER } from '../actionNames';
+import { CLEAR_PIECE_SELECTED, PIECE_SELECTED, RESET_GAME, SWITCH_PLAYER } from '@redux/actionNames';
+import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
 
 export const switchPlayer = () => ({
   type: SWITCH_PLAYER,
 });
 
-export const setPieceSelected = ({ row, col }) => ({
+export const setMoveSelectedStartSquareName = ({ row, col }) => ({
   type: PIECE_SELECTED,
-  row,
-  col,
+  squareName: getSquareNameFromRowCol(row, col),
 });
 
-export const clearPieceSelected = () => ({
+export const clearMoveSelectedStartSquareName = () => ({
   type: CLEAR_PIECE_SELECTED,
 });
 

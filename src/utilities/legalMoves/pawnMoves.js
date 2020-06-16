@@ -1,7 +1,7 @@
-import pieceTypes from '../../constants/pieceTypes';
-import { getRowColFromSquareName, getSquareNameFromRowCol } from '../squareNameUtility';
-import { isEnemyPiece } from '../movesUtility';
-import { getIdxFromRowCol } from '../rowColToIndexUtility';
+import pieceTypes from '@constants/pieceTypes';
+import { getRowColFromSquareName, getSquareNameFromRowCol } from '@utilities/squareNameUtility';
+import { isEnemyPiece } from '@utilities/movesUtility';
+import { getIdx, getIdxFromRowCol } from '@utilities/rowColToIndexUtility';
 
 export const getPawnMoves = ({ isWhite, from, squares, checkingAttacks = false }) => {
   // four possible moves - one forward, two forward,
@@ -50,11 +50,10 @@ export const getPawnMoves = ({ isWhite, from, squares, checkingAttacks = false }
 };
 
 export const isLegalPawnMove = ({ from, to, squares }) => {
-  const { row: fromRow, col: fromCol } = from;
   const { row: toRow, col: toCol } = to;
-  const pieceType = squares[getIdxFromRowCol(fromRow, fromCol)].piece.type;
+  const pieceType = squares[getIdx(from)].piece.type;
 
-  if (pieceType !== pieceTypes.WHITE_PAWN || pieceType !== pieceTypes.BLACK_PAWN) {
+  if (pieceType !== pieceTypes.WHITE_PAWN && pieceType !== pieceTypes.BLACK_PAWN) {
     throw Error(`unexpected piece type ${pieceType} when checking legal pawn moves`);
   }
   const moves = getPawnMoves({ isWhite: pieceType === pieceTypes.WHITE_PAWN, from, squares });

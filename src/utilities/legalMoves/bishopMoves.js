@@ -1,7 +1,7 @@
-import { getIdxFromRowCol } from '../rowColToIndexUtility';
-import { getSquareNameFromRowCol } from '../squareNameUtility';
-import pieceTypes from '../../constants/pieceTypes';
-import { decrementer, incrementer, isEmptyIfFriendlyCaptured, isEnemyPiece, maxBound, minBound } from '../movesUtility';
+import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
+import pieceTypes from '@constants/pieceTypes';
+import { decrementer, incrementer, isEmptyIfFriendlyCaptured, isEnemyPiece, maxBound, minBound } from '@utilities/movesUtility';
+import { getIdx } from '@utilities/rowColToIndexUtility';
 
 const checkMove = ({ isWhite, pieceType, checkingAttacks = false }) => {
   return !!(
@@ -20,7 +20,7 @@ export const getBishopMoves = ({ isWhite, from, squares, checkingAttacks = false
     let curRow = updateRowLocation(row);
     let curCol = updateColLocation(col);
     while (checkRowBound(curRow) && checkColBound(curCol)) {
-      const pieceType = squares[getIdxFromRowCol(row, col)].piece.type;
+      const pieceType = squares[getIdx(from)].piece.type;
       if (checkMove({ isWhite, pieceType, checkingAttacks })) {
         moves.push(getSquareNameFromRowCol(curRow, curCol));
         curRow = updateRowLocation(curRow);
@@ -45,16 +45,21 @@ export const getBishopMoves = ({ isWhite, from, squares, checkingAttacks = false
 export const isLegalBishopMove = ({ from, to, squares }) => {
   const { row: fromRow, col: fromCol } = from;
   const { row: toRow, col: toCol } = to;
-  const pieceType = squares[getIdxFromRowCol(fromRow, fromCol)].piece.type;
+  const pieceType = squares[getIdx(from)].piece.type;
 
-  if (pieceType !== pieceTypes.WHITE_BISHOP || pieceType !== pieceTypes.BLACK_BISHOP) {
+  if (
+    pieceType !== pieceTypes.WHITE_BISHOP &&
+    pieceType !== pieceTypes.BLACK_BISHOP &&
+    pieceType !== pieceTypes.WHITE_QUEEN &&
+    pieceType !== pieceTypes.BLACK_QUEEN
+  ) {
     throw Error(`unexpected piece type ${pieceType} when checking legal bishop moves`);
   }
 
   if (Math.abs(fromRow - toRow) === Math.abs(fromCol - toCol)) {
     return checkMove({
       isWhite: pieceType === pieceTypes.WHITE_BISHOP,
-      pieceType: squares[getIdxFromRowCol(toRow, toCol)].piece.type,
+      pieceType: squares[getIdx(to)].piece.type,
     });
   }
   return false;

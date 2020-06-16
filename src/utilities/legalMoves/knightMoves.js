@@ -1,7 +1,7 @@
 import pieceTypes from '@constants/pieceTypes';
-import { getIdxFromRowCol } from '../rowColToIndexUtility';
-import { isEmptyIfFriendlyCaptured, isEnemyPiece, maxBound, minBound } from '../movesUtility';
-import { getSquareNameFromRowCol } from '../squareNameUtility';
+import { getIdx, getIdxFromRowCol } from '@utilities/rowColToIndexUtility';
+import { isEmptyIfFriendlyCaptured, isEnemyPiece, maxBound, minBound } from '@utilities/movesUtility';
+import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
 
 const checkMove = ({ isWhite, rowToCheck, colToCheck, squares, checkingAttacks = false }) => {
   if (minBound(rowToCheck) && maxBound(rowToCheck) && minBound(colToCheck) && maxBound(colToCheck)) {
@@ -41,9 +41,9 @@ export const getKnightMoves = ({ isWhite, from, squares, checkingAttacks = false
 export const isLegalKnightMove = ({ from, to, squares }) => {
   const { row: fromRow, col: fromCol } = from;
   const { row: toRow, col: toCol } = to;
-  const pieceType = squares[getIdxFromRowCol(fromRow, fromCol)].piece.type;
+  const pieceType = squares[getIdx(from)].piece.type;
 
-  if (pieceType !== pieceTypes.WHITE_KNIGHT || pieceType !== pieceTypes.BLACK_KNIGHT) {
+  if (pieceType !== pieceTypes.WHITE_KNIGHT && pieceType !== pieceTypes.BLACK_KNIGHT) {
     throw Error(`unexpected piece type ${pieceType} when checking legal knight moves`);
   }
 

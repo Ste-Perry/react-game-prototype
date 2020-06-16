@@ -6,7 +6,7 @@ const MovesList = () => {
   return (
     <div className="noselect scrollable moves">
       {moves.map(move => (
-        <div>{move}</div>
+        <div key={move}>{move}</div>
       ))}
     </div>
   );

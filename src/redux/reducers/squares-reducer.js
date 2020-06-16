@@ -1,5 +1,5 @@
 import { buildSquares } from '@utilities/squareUtility';
-import { getRowColFromSquareName } from '@utilities/squareNameUtility';
+import { getIdxFromSquareName, getRowColFromSquareName } from '@utilities/squareNameUtility';
 import { HIGHLIGHT_LEGAL_MOVES, PIECE_SELECTED, RESET_GAME, RESET_HIGHLIGHTS, MOVE_PIECE } from '@redux/actionNames';
 import { getIdx } from '@utilities/rowColToIndexUtility';
 import pieceTypes from '@constants/pieceTypes';
@@ -47,7 +47,7 @@ const squaresReducer = (squares = initialSquares, action) => {
     case RESET_HIGHLIGHTS:
       return resetHighlights(squares);
     case PIECE_SELECTED:
-      return highlightPieceToMove(squares, getIdx(action.row, action.col));
+      return highlightPieceToMove(squares, getIdxFromSquareName(action.squareName));
     case HIGHLIGHT_LEGAL_MOVES:
       return highlightLegalMoves(squares, action.moves);
     case MOVE_PIECE:

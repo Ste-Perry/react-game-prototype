@@ -1,3 +1,4 @@
+import { getIdx } from '@utilities/rowColToIndexUtility';
 import {
   isEnemyPiece,
   addMoveFromCurCol,
@@ -11,7 +12,6 @@ import {
   isEmptyIfFriendlyCaptured,
 } from '../movesUtility';
 import pieceTypes from '../../constants/pieceTypes';
-import { getIdxFromRowCol } from '../rowColToIndexUtility';
 
 const checkMove = ({ isWhite, pieceType, checkingAttacks = false }) => {
   return isEmptyIfFriendlyCaptured(pieceType, isWhite, checkingAttacks) || pieceType === pieceTypes.EMPTY_SQUARE || isEnemyPiece(pieceType, isWhite);
@@ -49,16 +49,21 @@ export const getRookMoves = ({ isWhite, from, squares, checkingAttacks = false }
 export const isLegalRookMove = ({ from, to, squares }) => {
   const { row: fromRow, col: fromCol } = from;
   const { row: toRow, col: toCol } = to;
-  const pieceType = squares[getIdxFromRowCol(fromRow, fromCol)].piece.type;
+  const pieceType = squares[getIdx(from)].piece.type;
 
-  if (pieceType !== pieceTypes.WHITE_ROOK || pieceType !== pieceTypes.BLACK_ROOK) {
+  if (
+    pieceType !== pieceTypes.WHITE_ROOK &&
+    pieceType !== pieceTypes.BLACK_ROOK &&
+    pieceType !== pieceTypes.WHITE_QUEEN &&
+    pieceType !== pieceTypes.BLACK_QUEEN
+  ) {
     throw Error(`unexpected piece type ${pieceType} when checking legal rook moves`);
   }
 
   if (fromRow === toRow || fromCol === toCol) {
     return checkMove({
       isWhite: pieceType === pieceTypes.WHITE_ROOK,
-      pieceType: squares[getIdxFromRowCol(toRow, toCol)].piece.type,
+      pieceType: squares[getIdx(to)].piece.type,
     });
   }
   return false;

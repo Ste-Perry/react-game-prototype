@@ -1,9 +1,8 @@
-import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
 import { CLEAR_PIECE_SELECTED, PIECE_SELECTED, RESET_GAME, SWITCH_PLAYER } from '@redux/actionNames';
 
 const initialState = {
   isWhiteMove: true,
-  pieceSelected: '',
+  moveSelectedStartSquareName: '',
   gameWasReset: false,
 };
 
@@ -22,12 +21,12 @@ const gameReducer = (state = initialState, action) => {
     case PIECE_SELECTED:
       return {
         ...state,
-        pieceSelected: getSquareNameFromRowCol(action.row, action.col),
+        moveSelectedStartSquareName: action.squareName,
       };
     case CLEAR_PIECE_SELECTED:
       return {
         ...state,
-        pieceSelected: '',
+        moveSelectedStartSquareName: '',
       };
     default:
       return state;
