@@ -1,7 +1,7 @@
 import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
 import pieceTypes from '@constants/pieceTypes';
-import { decrementer, incrementer, isEmptyIfFriendlyCaptured, isEnemyPiece, maxBound, minBound } from '@utilities/movesUtility';
-import { getIdx } from '@utilities/rowColToIndexUtility';
+import { checkMovesBetween, decrementer, incrementer, isEmptyIfFriendlyCaptured, isEnemyPiece, maxBound, minBound } from '@utilities/movesUtility';
+import { getIdx, getIdxFromRowCol } from '@utilities/rowColToIndexUtility';
 
 const checkMove = ({ isWhite, pieceType, checkingAttacks = false }) => {
   return !!(
@@ -20,7 +20,7 @@ export const getBishopMoves = ({ isWhite, from, squares, checkingAttacks = false
     let curRow = updateRowLocation(row);
     let curCol = updateColLocation(col);
     while (checkRowBound(curRow) && checkColBound(curCol)) {
-      const pieceType = squares[getIdx(from)].piece.type;
+      const pieceType = squares[getIdxFromRowCol(curRow, curCol)].piece.type;
       if (checkMove({ isWhite, pieceType, checkingAttacks })) {
         moves.push(getSquareNameFromRowCol(curRow, curCol));
         curRow = updateRowLocation(curRow);
@@ -57,10 +57,8 @@ export const isLegalBishopMove = ({ from, to, squares }) => {
   }
 
   if (Math.abs(fromRow - toRow) === Math.abs(fromCol - toCol)) {
-    return checkMove({
-      isWhite: pieceType === pieceTypes.WHITE_BISHOP,
-      pieceType: squares[getIdx(to)].piece.type,
-    });
+    const isWhite = pieceType === pieceTypes.WHITE_QUEEN || pieceType === pieceTypes.WHITE_BISHOP;
+    return checkMovesBetween({ checkMove, isWhite, from, to, squares });
   }
   return false;
 };

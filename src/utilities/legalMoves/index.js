@@ -43,7 +43,10 @@ const canEnemyAttack = ({ isWhite, to, squares }) => {
   for (let idx = 0; idx < 64; idx += 1) {
     const pieceType = squares[idx].piece.type;
     const from = getRowCol(idx);
-    if (canPieceAttack({ isWhite, pieceType, from, to, isLegalMoveCallback: getCallbackFromPieceType({ pieceType, getAllMoves: false }) })) {
+    if (
+      pieceType !== pieceTypes.EMPTY_SQUARE &&
+      canPieceAttack({ isWhite, pieceType, from, to, isLegalMoveCallback: getCallbackFromPieceType({ pieceType, getAllMoves: false }), squares })
+    ) {
       console.log(`cannot move to row ${to.row}, col ${to.col} - can be attacked by piece ${pieceType} at row ${from.row}, col ${from.col}`);
       return true;
     }
@@ -56,7 +59,7 @@ const getLegalKingMoves = ({ isWhite, from, squares }) => {
   const possibleMoves = getKingMoves({ isWhite, from, squares });
   possibleMoves.forEach(move => {
     const to = getRowColFromSquareName(move);
-    if (!canEnemyAttack({ isWhite, to })) {
+    if (!canEnemyAttack({ isWhite, to, squares })) {
       kingMoves.push(move);
     }
   });
@@ -89,7 +92,7 @@ export const getLegalMoves = ({ from, squares }) => {
       break;
     case pieceTypes.BLACK_KING:
     case pieceTypes.WHITE_KING:
-      moves = getLegalKingMoves({ isWhite: pieceType === pieceTypes.WHITE_KING });
+      moves = getLegalKingMoves({ isWhite: pieceType === pieceTypes.WHITE_KING, from, squares });
       break;
     case pieceTypes.EMPTY_SQUARE:
     default:
@@ -125,7 +128,7 @@ export const isLegalMove = ({ from, to, squares }) => {
       break;
     case pieceTypes.BLACK_KING:
     case pieceTypes.WHITE_KING:
-      isLegal = isLegalPawnMove({ from, to, squares }) && !canEnemyAttack({ isWhite: pieceType === pieceTypes.WHITE_KING, to, squares });
+      isLegal = isLegalKingMove({ from, to, squares }) && !canEnemyAttack({ isWhite: pieceType === pieceTypes.WHITE_KING, to, squares });
       break;
     case pieceTypes.EMPTY_SQUARE:
     default:

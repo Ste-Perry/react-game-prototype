@@ -10,8 +10,9 @@ import {
   maxBound,
   minBound,
   isEmptyIfFriendlyCaptured,
-} from '../movesUtility';
-import pieceTypes from '../../constants/pieceTypes';
+  checkMovesBetween,
+} from '@utilities/movesUtility';
+import pieceTypes from '@constants/pieceTypes';
 
 const checkMove = ({ isWhite, pieceType, checkingAttacks = false }) => {
   return isEmptyIfFriendlyCaptured(pieceType, isWhite, checkingAttacks) || pieceType === pieceTypes.EMPTY_SQUARE || isEnemyPiece(pieceType, isWhite);
@@ -61,10 +62,8 @@ export const isLegalRookMove = ({ from, to, squares }) => {
   }
 
   if (fromRow === toRow || fromCol === toCol) {
-    return checkMove({
-      isWhite: pieceType === pieceTypes.WHITE_ROOK,
-      pieceType: squares[getIdx(to)].piece.type,
-    });
+    const isWhite = pieceType === pieceTypes.WHITE_QUEEN || pieceType === pieceTypes.WHITE_ROOK;
+    return checkMovesBetween({ checkMove, isWhite, from, to, squares });
   }
   return false;
 };

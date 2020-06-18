@@ -1,7 +1,7 @@
 import pt from '@constants/pieceTypes';
 import square from '@models/square';
 import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
-import { getIdxFromRowCol } from './rowColToIndexUtility';
+import { getIdx, getIdxFromRowCol } from '@utilities/rowColToIndexUtility';
 
 const defaultBoardSetup = [
   pt.BLACK_ROOK,
@@ -133,5 +133,28 @@ export const getSquareSelected = location => {
 const inBoundsX = ({ location, offset, xMax }) => location.pageX >= offset && location.pageX <= xMax;
 const inBoundsY = ({ location, offset, yMax }) => location.pageY >= offset && location.pageY <= yMax;
 
+const getStep = (from, to) => {
+  if (from < to) {
+    return 1;
+  }
+  if (from > to) {
+    return -1;
+  }
+  return 0;
+};
+
 export const inBounds = ({ location, offset, xMax, yMax }) =>
   location && inBoundsX({ location, offset, xMax }) && inBoundsY({ location, offset, yMax });
+
+export const getAllMoveSquares = ({ from, to, squares }) => {
+  const result = [];
+  const { row: fromRow, col: fromCol } = from;
+  const { row: toRow, col: toCol } = to;
+  const stepRow = getStep(fromRow, toRow);
+  const stepCol = getStep(fromCol, toCol);
+  for (let curRow = fromRow + stepRow, curCol = fromCol + stepCol; curRow !== toRow || curCol !== toCol; curRow += stepRow, curCol += stepCol) {
+    result.push(squares[getIdxFromRowCol(curRow, curCol)]);
+  }
+  result.push(squares[getIdx(to)]);
+  return result;
+};

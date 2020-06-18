@@ -1,6 +1,7 @@
 import pieceTypes from '@constants/pieceTypes';
 import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
-import { getIdxFromRowCol } from './rowColToIndexUtility';
+import { getIdxFromRowCol } from '@utilities/rowColToIndexUtility';
+import { getAllMoveSquares } from '@utilities/squareUtility';
 
 export const isEnemyPiece = (pieceType, isWhite) => {
   const targetIsWhite =
@@ -15,6 +16,17 @@ export const isEnemyPiece = (pieceType, isWhite) => {
 
 export const isEmptyIfFriendlyCaptured = (pieceType, isWhite, checkingAttacks) => {
   return checkingAttacks && !isEnemyPiece(pieceType, isWhite);
+};
+
+export const checkMovesBetween = ({ checkMove, isWhite, from, to, squares }) => {
+  const squaresBetween = getAllMoveSquares({ from, to, squares });
+  for (let idx = 0; idx < squaresBetween.length; idx += 1) {
+    const pieceType = squaresBetween[idx].piece.type;
+    if (!checkMove({ isWhite, pieceType })) {
+      return false;
+    }
+  }
+  return true;
 };
 
 export const incrementer = count => count + 1;
