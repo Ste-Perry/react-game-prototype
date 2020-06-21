@@ -49,14 +49,14 @@ export const getPawnMoves = ({ isWhite, from, squares, checkingAttacks = false }
   return moves;
 };
 
-export const isLegalPawnMove = ({ from, to, squares }) => {
+export const isLegalPawnMove = ({ from, to, squares, checkingAttacks = false }) => {
   const { row: toRow, col: toCol } = to;
   const pieceType = squares[getIdx(from)].piece.type;
 
   if (pieceType !== pieceTypes.WHITE_PAWN && pieceType !== pieceTypes.BLACK_PAWN) {
     throw Error(`unexpected piece type ${pieceType} when checking legal pawn moves`);
   }
-  const moves = getPawnMoves({ isWhite: pieceType === pieceTypes.WHITE_PAWN, from, squares });
+  const moves = getPawnMoves({ isWhite: pieceType === pieceTypes.WHITE_PAWN, from, squares, checkingAttacks });
   for (let idx = 0; idx < moves.length; idx += 1) {
     const { row: moveRow, col: moveCol } = getRowColFromSquareName(moves[idx]);
     if (moveRow === toRow && moveCol === toCol) {

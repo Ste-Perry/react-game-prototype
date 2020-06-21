@@ -143,6 +143,14 @@ const getStep = (from, to) => {
   return 0;
 };
 
+export const pieceIsWhite = pieceType =>
+  pieceType !== pt.BLACK_PAWN &&
+  pieceType !== pt.BLACK_KNIGHT &&
+  pieceType !== pt.BLACK_KING &&
+  pieceType !== pt.BLACK_BISHOP &&
+  pieceType !== pt.BLACK_QUEEN &&
+  pieceType !== pt.BLACK_ROOK;
+
 export const inBounds = ({ location, offset, xMax, yMax }) =>
   location && inBoundsX({ location, offset, xMax }) && inBoundsY({ location, offset, yMax });
 

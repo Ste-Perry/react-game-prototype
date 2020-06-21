@@ -10,29 +10,29 @@ import { getQueenMoves, isLegalQueenMove } from './queenMoves';
 import { getKingMoves, isLegalKingMove } from './kingMoves';
 
 const canPieceAttack = ({ isWhite, pieceType, from, to, isLegalMoveCallback, squares }) => {
-  return isEnemyPiece(pieceType, isWhite) && isLegalMoveCallback({ from, to, squares });
+  return isEnemyPiece(pieceType, isWhite) && isLegalMoveCallback({ from, to, squares, checkingAttacks: true });
 };
 
-const getCallbackFromPieceType = ({ pieceType, getAllMoves }) => {
+const getLegalMoveCallback = pieceType => {
   switch (pieceType) {
     case pieceTypes.WHITE_PAWN:
     case pieceTypes.BLACK_PAWN:
-      return getAllMoves ? getPawnMoves : isLegalPawnMove;
+      return isLegalPawnMove;
     case pieceTypes.WHITE_ROOK:
     case pieceTypes.BLACK_ROOK:
-      return getAllMoves ? getRookMoves : isLegalRookMove;
+      return isLegalRookMove;
     case pieceTypes.WHITE_KNIGHT:
     case pieceTypes.BLACK_KNIGHT:
-      return getAllMoves ? getKnightMoves : isLegalKnightMove;
+      return isLegalKnightMove;
     case pieceTypes.WHITE_BISHOP:
     case pieceTypes.BLACK_BISHOP:
-      return getAllMoves ? getBishopMoves : isLegalBishopMove;
+      return isLegalBishopMove;
     case pieceTypes.WHITE_QUEEN:
     case pieceTypes.BLACK_QUEEN:
-      return getAllMoves ? getQueenMoves : isLegalQueenMove;
+      return isLegalQueenMove;
     case pieceTypes.WHITE_KING:
     case pieceTypes.BLACK_KING:
-      return getAllMoves ? getKingMoves : isLegalKingMove;
+      return isLegalKingMove;
     case pieceTypes.EMPTY_SQUARE:
     default:
       return () => [];
@@ -45,7 +45,7 @@ const canEnemyAttack = ({ isWhite, to, squares }) => {
     const from = getRowCol(idx);
     if (
       pieceType !== pieceTypes.EMPTY_SQUARE &&
-      canPieceAttack({ isWhite, pieceType, from, to, isLegalMoveCallback: getCallbackFromPieceType({ pieceType, getAllMoves: false }), squares })
+      canPieceAttack({ isWhite, pieceType, from, to, isLegalMoveCallback: getLegalMoveCallback(pieceType), squares })
     ) {
       console.log(`cannot move to row ${to.row}, col ${to.col} - can be attacked by piece ${pieceType} at row ${from.row}, col ${from.col}`);
       return true;

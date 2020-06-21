@@ -6,7 +6,11 @@ import pieceTypes from '@constants/pieceTypes';
 const checkMove = ({ isWhite, checkRow, checkCol, checkRowBound, checkColBound, squares, checkingAttacks = false }) => {
   if (checkRowBound(checkRow) && checkColBound(checkCol)) {
     const pieceType = squares[getIdxFromRowCol(checkRow, checkCol)].piece.type;
-    if (isEmptyIfFriendlyCaptured(pieceType, isWhite, checkingAttacks) || pieceType === pieceTypes.EMPTY_SQUARE || isEnemyPiece(pieceType, isWhite)) {
+    if (
+      isEmptyIfFriendlyCaptured({ pieceType, isWhite, checkingAttacks, kingAttack: true }) ||
+      pieceType === pieceTypes.EMPTY_SQUARE ||
+      isEnemyPiece(pieceType, isWhite)
+    ) {
       return true;
     }
     console.log(`can't move to row ${checkRow}, col ${checkCol} - square is friendly piece of type ${pieceType}`);
@@ -36,7 +40,7 @@ export const getKingMoves = ({ isWhite, from, squares, checkingAttacks = false }
   return moves;
 };
 
-export const isLegalKingMove = ({ from, to, squares }) => {
+export const isLegalKingMove = ({ from, to, squares, checkingAttacks = false }) => {
   const { row: fromRow, col: fromCol } = from;
   const { row: toRow, col: toCol } = to;
   const pieceType = squares[getIdx(from)].piece.type;
@@ -55,5 +59,6 @@ export const isLegalKingMove = ({ from, to, squares }) => {
     checkRowBound: minMaxBound,
     checkColBound: minMaxBound,
     squares,
+    checkingAttacks,
   });
 };

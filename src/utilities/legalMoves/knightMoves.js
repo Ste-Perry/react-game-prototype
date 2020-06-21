@@ -7,7 +7,7 @@ const checkMove = ({ isWhite, rowToCheck, colToCheck, squares, checkingAttacks =
   if (minBound(rowToCheck) && maxBound(rowToCheck) && minBound(colToCheck) && maxBound(colToCheck)) {
     const pieceType = squares[getIdxFromRowCol(rowToCheck, colToCheck)].piece.type;
     return !!(
-      isEmptyIfFriendlyCaptured(pieceType, isWhite, checkingAttacks) ||
+      isEmptyIfFriendlyCaptured({ pieceType, isWhite, checkingAttacks, kingAttack: true }) ||
       pieceType === pieceTypes.EMPTY_SQUARE ||
       isEnemyPiece(pieceType, isWhite)
     );
@@ -38,7 +38,7 @@ export const getKnightMoves = ({ isWhite, from, squares, checkingAttacks = false
   return moves;
 };
 
-export const isLegalKnightMove = ({ from, to, squares }) => {
+export const isLegalKnightMove = ({ from, to, squares, checkingAttacks = false }) => {
   const { row: fromRow, col: fromCol } = from;
   const { row: toRow, col: toCol } = to;
   const pieceType = squares[getIdx(from)].piece.type;
@@ -53,6 +53,7 @@ export const isLegalKnightMove = ({ from, to, squares }) => {
       rowToCheck: toRow,
       colToCheck: toCol,
       squares,
+      checkingAttacks,
     });
   }
   return false;

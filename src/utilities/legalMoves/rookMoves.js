@@ -14,8 +14,12 @@ import {
 } from '@utilities/movesUtility';
 import pieceTypes from '@constants/pieceTypes';
 
-const checkMove = ({ isWhite, pieceType, checkingAttacks = false }) => {
-  return isEmptyIfFriendlyCaptured(pieceType, isWhite, checkingAttacks) || pieceType === pieceTypes.EMPTY_SQUARE || isEnemyPiece(pieceType, isWhite);
+const checkMove = ({ isWhite, pieceType, checkingAttacks = false, kingAttack = false }) => {
+  return (
+    isEmptyIfFriendlyCaptured({ pieceType, isWhite, checkingAttacks, kingAttack }) ||
+    pieceType === pieceTypes.EMPTY_SQUARE ||
+    isEnemyPiece(pieceType, isWhite)
+  );
 };
 
 export const getRookMoves = ({ isWhite, from, squares, checkingAttacks = false }) => {
@@ -47,7 +51,7 @@ export const getRookMoves = ({ isWhite, from, squares, checkingAttacks = false }
   return moves;
 };
 
-export const isLegalRookMove = ({ from, to, squares }) => {
+export const isLegalRookMove = ({ from, to, squares, checkingAttacks = false }) => {
   const { row: fromRow, col: fromCol } = from;
   const { row: toRow, col: toCol } = to;
   const pieceType = squares[getIdx(from)].piece.type;
@@ -63,7 +67,7 @@ export const isLegalRookMove = ({ from, to, squares }) => {
 
   if (fromRow === toRow || fromCol === toCol) {
     const isWhite = pieceType === pieceTypes.WHITE_QUEEN || pieceType === pieceTypes.WHITE_ROOK;
-    return checkMovesBetween({ checkMove, isWhite, from, to, squares });
+    return checkMovesBetween({ checkMove, isWhite, from, to, squares, checkingAttacks });
   }
   return false;
 };

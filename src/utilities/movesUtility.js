@@ -1,28 +1,26 @@
 import pieceTypes from '@constants/pieceTypes';
 import { getSquareNameFromRowCol } from '@utilities/squareNameUtility';
 import { getIdxFromRowCol } from '@utilities/rowColToIndexUtility';
-import { getAllMoveSquares } from '@utilities/squareUtility';
+import { getAllMoveSquares, pieceIsWhite } from '@utilities/squareUtility';
 
 export const isEnemyPiece = (pieceType, isWhite) => {
-  const targetIsWhite =
-    pieceType === pieceTypes.WHITE_PAWN ||
-    pieceType === pieceTypes.WHITE_ROOK ||
-    pieceType === pieceTypes.WHITE_KNIGHT ||
-    pieceType === pieceTypes.WHITE_BISHOP ||
-    pieceType === pieceTypes.WHITE_QUEEN ||
-    pieceType === pieceTypes.WHITE_KING;
+  if (pieceType === pieceTypes.EMPTY_SQUARE) {
+    return false;
+  }
+  const targetIsWhite = pieceIsWhite(pieceType);
   return (targetIsWhite && !isWhite) || (!targetIsWhite && isWhite);
 };
 
-export const isEmptyIfFriendlyCaptured = (pieceType, isWhite, checkingAttacks) => {
-  return checkingAttacks && !isEnemyPiece(pieceType, isWhite);
+export const isEmptyIfFriendlyCaptured = ({ pieceType, isWhite, checkingAttacks, kingAttack }) => {
+  return checkingAttacks && kingAttack && !isEnemyPiece(pieceType, isWhite);
 };
 
-export const checkMovesBetween = ({ checkMove, isWhite, from, to, squares }) => {
+export const checkMovesBetween = ({ checkMove, isWhite, from, to, squares, checkingAttacks }) => {
   const squaresBetween = getAllMoveSquares({ from, to, squares });
   for (let idx = 0; idx < squaresBetween.length; idx += 1) {
     const pieceType = squaresBetween[idx].piece.type;
-    if (!checkMove({ isWhite, pieceType })) {
+    const { row: pieceRow, col: pieceCol } = squaresBetween[idx];
+    if (!checkMove({ isWhite, pieceType, checkingAttacks, kingAttack: pieceRow === to.row && pieceCol === to.col })) {
       return false;
     }
   }

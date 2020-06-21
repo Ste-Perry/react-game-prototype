@@ -6,6 +6,6 @@ export const getQueenMoves = ({ isWhite, from, squares, checkingAttacks = false 
   return [...getRookMoves({ isWhite, from, squares, checkingAttacks }), ...getBishopMoves({ isWhite, from, squares, checkingAttacks })];
 };
 
-export const isLegalQueenMove = ({ from, to, squares }) => {
-  return isLegalRookMove({ from, to, squares }) || isLegalBishopMove({ from, to, squares });
+export const isLegalQueenMove = ({ from, to, squares, checkingAttacks = false }) => {
+  return isLegalRookMove({ from, to, squares, checkingAttacks }) || isLegalBishopMove({ from, to, squares, checkingAttacks });
 };
